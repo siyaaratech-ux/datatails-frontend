@@ -1,0 +1,172 @@
+{
+    "fallbacks": [
+      {
+        "id": "roles",
+        "title": "Creative Roles in Award-Winning Films (2010–2019)",
+        "source": "fallback: roles map",
+        "data": {
+          "name": "Film Production Roles",
+          "children": [
+            {
+              "name": "Director",
+              "children": [
+                { "name": "Creative Vision & Responsibility", "value": 1 },
+                { "name": "Script Development & Production Design", "value": 1 },
+                { "name": "Collaboration with Crew", "value": 1 }
+              ]
+            },
+            {
+              "name": "Cinematographer",
+              "children": [
+                { "name": "Visual Style & Camera Placement", "value": 1 },
+                { "name": "Director Collaboration", "value": 1 },
+                { "name": "Works with Gaffers, Grips", "value": 1 }
+              ]
+            },
+            {
+              "name": "Cinematography Team",
+              "children": [
+                { "name": "Gaffer - Lighting", "value": 1 },
+                { "name": "Grip - Camera Movement", "value": 1 },
+                { "name": "Camera Operator", "value": 1 },
+                { "name": "Focus Puller", "value": 1 }
+              ]
+            },
+            {
+              "name": "Visual Effects Team",
+              "children": [
+                { "name": "VFX Supervisor", "value": 1 },
+                { "name": "VFX Artist", "value": 1 }
+              ]
+            },
+            {
+              "name": "Editor",
+              "children": [
+                { "name": "Final Cut", "value": 1 },
+                { "name": "Pacing & Storytelling", "value": 1 },
+                { "name": "Sound & Composer Collaboration", "value": 1 }
+              ]
+            },
+            {
+              "name": "Post-Production Team",
+              "children": [
+                { "name": "Sound Designer", "value": 1 },
+                { "name": "Composer", "value": 1 },
+                { "name": "Music Editor", "value": 1 }
+              ]
+            },
+            {
+              "name": "Production Design Team",
+              "children": [
+                { "name": "Production Designer", "value": 1 },
+                { "name": "Art Director", "value": 1 },
+                { "name": "Set Decorator", "value": 1 }
+              ]
+            },
+            {
+              "name": "Script & Story Development",
+              "children": [
+                { "name": "Screenwriter", "value": 1 },
+                { "name": "Story Editor", "value": 1 }
+              ]
+            },
+            {
+              "name": "Producers",
+              "children": [
+                { "name": "Producer", "value": 1 },
+                { "name": "Executive Producer", "value": 1 }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "id": "structure",
+        "title": "Dramatic Structure of Classic Films",
+        "source": "fallback: film structure",
+        "data": {
+          "name": "Dramatic Structure",
+          "children": [
+            {
+              "name": "Act 1: Setup",
+              "children": [
+                {
+                  "name": "Sequence 1: Introduction (Scenes 1–3)",
+                  "children": [
+                    { "name": "Introduce Protagonist & Setting", "value": 1 },
+                    { "name": "Establish Context and Tone", "value": 1 }
+                  ]
+                },
+                {
+                  "name": "Sequence 2: Exposition (Scenes 4–6)",
+                  "children": [
+                    { "name": "Backstory & Relationships", "value": 1 },
+                    { "name": "Introduce Conflict", "value": 1 }
+                  ]
+                },
+                {
+                  "name": "Sequence 3: Inciting Incident (Scenes 7–9)",
+                  "children": [
+                    { "name": "Set Conflict in Motion", "value": 1 },
+                    { "name": "Define Stakes", "value": 1 }
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "Act 2: Confrontation",
+              "children": [
+                {
+                  "name": "Sequence 4: Rising Action (Scenes 10–18)",
+                  "children": [
+                    { "name": "Overcoming Challenges", "value": 1 },
+                    { "name": "New Characters & Conflicts", "value": 1 }
+                  ]
+                },
+                {
+                  "name": "Sequence 5: Setbacks (Scenes 19–23)",
+                  "children": [
+                    { "name": "Create Obstacles", "value": 1 },
+                    { "name": "Test Resolve", "value": 1 }
+                  ]
+                },
+                {
+                  "name": "Sequence 6: Crisis (Scenes 24–26)",
+                  "children": [
+                    { "name": "Peak Tension", "value": 1 },
+                    { "name": "Greatest Challenge", "value": 1 }
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "Act 3: Resolution",
+              "children": [
+                {
+                  "name": "Sequence 7: Climax (Scenes 27–29)",
+                  "children": [
+                    { "name": "Resolve Conflict", "value": 1 },
+                    { "name": "Face Greatest Fear", "value": 1 }
+                  ]
+                },
+                {
+                  "name": "Sequence 8: Falling Action (Scenes 30–32)",
+                  "children": [
+                    { "name": "Aftermath", "value": 1 },
+                    { "name": "Resolve Subplots", "value": 1 }
+                  ]
+                },
+                {
+                  "name": "Sequence 9: Resolution (Scenes 33–35)",
+                  "children": [
+                    { "name": "Tie Loose Ends", "value": 1 },
+                    { "name": "Emotional Closure", "value": 1 }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      }
+    ]
+  }  

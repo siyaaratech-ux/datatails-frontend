@@ -1,0 +1,76 @@
+/* src/styles/index.css */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css');
+
+:root {
+  /* Main Colors */
+  --primary-color: #be285e;    /* Pink/Red */
+  --secondary-color: #28be88;  /* Green */
+  
+  /* Color Variations */
+  --primary-light: #e8a5bc;    /* Light Pink */
+  --primary-dark: #8d1e45;     /* Dark Pink */
+  --secondary-light: #a5e8d0;  /* Light Green */
+  --secondary-dark: #1e8d6a;   /* Dark Green */
+  
+  /* Neutral Colors */
+  --text-dark: #2d3748;
+  --text-light: #f7fafc;
+  --background-light: #ffffff;
+  --background-dark: #1a202c;
+  --border-color: #e2e8f0;
+  
+  /* Status Colors */
+  --error-color: #e53e3e;
+  --success-color: #38a169;
+  --warning-color: #ed8936;
+  
+  /* UI Elements */
+  --border-radius: 8px;
+  --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --transition: all 0.3s ease;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  line-height: 1.6;
+  color: var(--text-dark);
+  background-color: var(--background-light);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+button, input, textarea {
+  font-family: inherit;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  border-radius: var(--border-radius);
+  transition: var(--transition);
+}
+
+a {
+  color: var(--primary-color);
+  text-decoration: none;
+  transition: var(--transition);
+}
+
+a:hover {
+  color: var(--primary-dark);
+}
+
+/* Import App.css for main styles */
+@import './App.css';
