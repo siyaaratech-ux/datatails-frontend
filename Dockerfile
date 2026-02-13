@@ -1,41 +1,32 @@
-# Multi-stage build for production
+# Frontend-only build and serve (backend is in separate datatails-backend repo)
 FROM node:18-alpine AS frontend-build
 
-WORKDIR /app/frontend
+WORKDIR /app
 COPY Frontend/package*.json ./
 RUN npm ci --only=production
 COPY Frontend/ ./
+# Build-time env (set via docker-compose build args or --build-arg)
+ARG REACT_APP_API_URL=http://localhost:5000
+ENV REACT_APP_API_URL=${REACT_APP_API_URL}
+ARG REACT_APP_FIREBASE_API_KEY
+ENV REACT_APP_FIREBASE_API_KEY=${REACT_APP_FIREBASE_API_KEY}
+ARG REACT_APP_FIREBASE_AUTH_DOMAIN
+ENV REACT_APP_FIREBASE_AUTH_DOMAIN=${REACT_APP_FIREBASE_AUTH_DOMAIN}
+ARG REACT_APP_FIREBASE_PROJECT_ID
+ENV REACT_APP_FIREBASE_PROJECT_ID=${REACT_APP_FIREBASE_PROJECT_ID}
+ARG REACT_APP_FIREBASE_STORAGE_BUCKET
+ENV REACT_APP_FIREBASE_STORAGE_BUCKET=${REACT_APP_FIREBASE_STORAGE_BUCKET}
+ARG REACT_APP_FIREBASE_MESSAGING_SENDER_ID
+ENV REACT_APP_FIREBASE_MESSAGING_SENDER_ID=${REACT_APP_FIREBASE_MESSAGING_SENDER_ID}
+ARG REACT_APP_FIREBASE_APP_ID
+ENV REACT_APP_FIREBASE_APP_ID=${REACT_APP_FIREBASE_APP_ID}
+ARG REACT_APP_FIREBASE_MEASUREMENT_ID
+ENV REACT_APP_FIREBASE_MEASUREMENT_ID=${REACT_APP_FIREBASE_MEASUREMENT_ID}
 RUN npm run build
 
-FROM python:3.10-slim AS backend
+FROM nginx:alpine AS frontend
 
-# Set working directory
-WORKDIR /app
-
-# Install system dependencies
-RUN apt-get update && apt-get install -y \
-    gcc \
-    g++ \
-    && rm -rf /var/lib/apt/lists/*
-
-# Copy requirements and install Python dependencies
-COPY Backend/requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
-
-# Copy backend code
-COPY Backend/ ./
-
-# Create non-root user for security
-RUN useradd --create-home --shell /bin/bash appuser && \
-    chown -R appuser:appuser /app
-USER appuser
-
-# Expose port
-EXPOSE 5000
-
-# Health check
-HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 \
-    CMD curl -f http://localhost:5000/ || exit 1
-
-# Run the application
-CMD ["python", "app.py"]
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+COPY --from=frontend-build /app/build /usr/share/nginx/html
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]

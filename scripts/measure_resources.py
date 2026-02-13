@@ -5,7 +5,7 @@ Poll GET /api/metrics and log CPU/RAM for deployment sizing.
 Usage:
   python scripts/measure_resources.py [--base-url URL] [--interval SEC] [--duration MIN] [--output CSV]
 
-Ensure the backend is running (e.g. docker-compose up) before running.
+Ensure the backend is running (e.g. run datatails-backend locally or use --base-url for a deployed API) before running.
 """
 
 import argparse

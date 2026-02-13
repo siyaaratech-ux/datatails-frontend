@@ -1,4 +1,6 @@
-# DataTails Deployment Guide
+# DataTails Frontend - Deployment Guide
+
+The **backend** is in a separate repo (`datatails-backend`). This guide covers the frontend repo and references the backend where needed.
 
 ## Security Improvements Applied
 
@@ -13,43 +15,41 @@
 
 ### 🔧 Environment Variables Setup
 
-#### Backend (.env)
+#### Backend (in `datatails-backend` repo)
+Set these in the backend repo’s `.env` or Vercel env:
 ```bash
-# Backend Environment Variables
-GROQ_API_KEY=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
-FLASK_ENV=development
-SECRET_KEY=your-secret-key-change-this-in-production
-CORS_ORIGINS=http://localhost:3000,https://your-frontend-domain.com
+GROQ_API_KEY=...
+SECRET_KEY=...
+CORS_ORIGINS=http://localhost:3000,https://datatail.online,https://www.datatail.online
 MAX_FILE_SIZE=10485760
 RATE_LIMIT_PER_MINUTE=10
 RATE_LIMIT_PER_HOUR=100
 ```
 
-#### Frontend (.env)
+#### Frontend (this repo: `Frontend/.env` or Vercel)
 ```bash
-# Frontend Environment Variables
-REACT_APP_API_URL=http://localhost:5000
-REACT_APP_FIREBASE_API_KEY=AIzaSyDGT14SiCyZZeacCUMfvh10ZEVlipHn5PI
-REACT_APP_FIREBASE_AUTH_DOMAIN=fyp-dt-1f493.firebaseapp.com
-REACT_APP_FIREBASE_PROJECT_ID=fyp-dt-1f493
-REACT_APP_FIREBASE_STORAGE_BUCKET=fyp-dt-1f493.firebasestorage.app
-REACT_APP_FIREBASE_MESSAGING_SENDER_ID=134618746457
-REACT_APP_FIREBASE_APP_ID=1:134618746457:web:908ab3c517cedad1d9eb48
-REACT_APP_FIREBASE_MEASUREMENT_ID=G-5BP9YLL94W
+REACT_APP_API_URL=https://datatails-backend.vercel.app
+REACT_APP_FIREBASE_API_KEY=...
+REACT_APP_FIREBASE_AUTH_DOMAIN=...
+REACT_APP_FIREBASE_PROJECT_ID=...
+REACT_APP_FIREBASE_STORAGE_BUCKET=...
+REACT_APP_FIREBASE_MESSAGING_SENDER_ID=...
+REACT_APP_FIREBASE_APP_ID=...
+REACT_APP_FIREBASE_MEASUREMENT_ID=...
 ```
 
 ## 🚀 Running the Application
 
 ### Development Mode
 
-#### Backend
+#### Backend (in `datatails-backend` repo)
 ```bash
-cd Backend
+cd path/to/datatails-backend
 pip install -r requirements.txt
 python app.py
 ```
 
-#### Frontend
+#### Frontend (this repo)
 ```bash
 cd Frontend
 npm install
@@ -58,30 +58,12 @@ npm start
 
 ### Production Mode
 
-#### Using Docker
+#### Frontend with Docker (this repo only)
 ```bash
-# Build and run with docker-compose
+# Set REACT_APP_API_URL and Firebase vars in .env, then:
 docker-compose up --build
-
-# Or run individual services
-docker build -t datatails-backend .
-docker run -p 5000:5000 --env-file .env datatails-backend
 ```
-
-#### Using Docker Compose
-```bash
-# Copy environment variables
-cp .env.production .env
-
-# Start services
-docker-compose up -d
-
-# View logs
-docker-compose logs -f
-
-# Stop services
-docker-compose down
-```
+Serves the frontend at http://localhost:3000. Backend runs separately (e.g. datatails-backend repo or https://datatails-backend.vercel.app).
 
 ## 🔒 Security Features Added
 
@@ -111,8 +93,8 @@ docker-compose down
 ## 🌐 Deployment Options
 
 ### Option 1: Cloud Platforms (Recommended)
-- **Backend**: Railway, Heroku, Render, DigitalOcean App Platform
-- **Frontend**: Vercel, Netlify, GitHub Pages
+- **Backend** (datatails-backend repo): Vercel (Flask), Railway, Render, etc.
+- **Frontend** (this repo): Vercel, Netlify; set Root Directory to `Frontend` and `REACT_APP_API_URL` to backend URL.
 
 ### Option 2: VPS Deployment
 - Use Nginx as reverse proxy
@@ -139,7 +121,7 @@ docker-compose down
 ## 🔍 Monitoring
 
 ### Health Checks
-- Backend: `GET /` returns `{"status": "API is running"}`
+- Backend (datatails-backend): `GET <backend-url>/` returns `{"status": "API is running"}`
 - Frontend: Built-in React health checks
 
 ### Logs
@@ -153,34 +135,26 @@ Use these to measure CPU and RAM so you can choose instance size and container l
 
 ### Container-level: `docker stats`
 
-With the app running via Docker Compose:
+With the frontend running via this repo’s Docker Compose:
 
 ```bash
-# Live view (updates every few seconds)
-docker stats
-
-# Single snapshot
 docker stats --no-stream
 ```
 
-Shows per-container CPU % and memory usage. Use this to see backend and frontend usage under load.
+Shows frontend container CPU/memory. Backend (if run via its own repo) is monitored separately.
 
-### In-app metrics: `GET /api/metrics`
+### Backend metrics: `GET /api/metrics`
 
-The backend exposes process and host resource metrics at **`GET /api/metrics`** (no auth by default; restrict in production if needed).
+The **backend** (datatails-backend) exposes process and host resource metrics at **`GET /api/metrics`**.
 
-**Example:** `curl http://localhost:5000/api/metrics`
+**Example:** `curl https://datatails-backend.vercel.app/api/metrics` (or your backend URL)
 
-**Response shape:**
-- **process**: `cpu_percent`, `memory_rss_mb`, `memory_vms_mb` (this process)
-- **host**: `memory_total_mb`, `memory_available_mb`, `cpu_count_logical` (when available, e.g. on a single host)
+**Response shape:** `process` (cpu_percent, memory_rss_mb, …), `host` (when available).
 
 ### Recommended sizing workflow
 
-1. Run typical workloads (chat, uploads, visualizations) for a few minutes.
-2. Observe **`docker stats`** and **`GET /api/metrics`** during that period (or use the baseline script in `scripts/measure_resources.py` to log metrics to CSV).
-3. Note peak CPU and RAM (backend is usually the heavier service).
-4. Set your deployment instance size and Docker resource limits from that peak (e.g. 1.5–2× peak for headroom).
+1. Run typical workloads; observe backend metrics and container stats.
+2. Set deployment instance size and limits from peak usage (e.g. 1.5–2× for headroom).
 
 ## 🛡️ Additional Security Recommendations
 

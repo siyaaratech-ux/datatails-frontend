@@ -190,10 +190,10 @@ Automatically selects the **best visualization** based on data characteristics.
 - Responsive dashboards
 - Role‑based UI components
 
-### Backend
-- Python / .NET APIs
+### Backend (separate repo: `datatails-backend`)
+- Python Flask API
 - REST‑based services
-- Modular service boundaries
+- Deployed at https://datatails-backend.vercel.app (or self‑hosted)
 
 ### Data Layer
 - SQL (structured data)
