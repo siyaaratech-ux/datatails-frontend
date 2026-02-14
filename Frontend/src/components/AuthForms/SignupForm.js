@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { registerUser } from '../../services/firebase';
+import { getAuthErrorMessage } from '../../services/auth';
 import Button from '../Common/Button';
 import '../../styles/App.css';
 
@@ -55,7 +56,7 @@ const SignupForm = () => {
       await registerUser(username, email, password);
       navigate('/login');
     } catch (error) {
-      setError(error.message || 'Failed to create account');
+      setError(getAuthErrorMessage(error));
       console.error('Signup error:', error);
     } finally {
       setLoading(false);

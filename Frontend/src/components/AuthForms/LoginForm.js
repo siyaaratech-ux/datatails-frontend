@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { loginUser } from '../../services/firebase';
+import { getAuthErrorMessage } from '../../services/auth';
 import Button from '../Common/Button';
 import '../../styles/App.css';
 
@@ -26,7 +27,7 @@ const LoginForm = () => {
       await loginUser(username, password);
       navigate('/chat');
     } catch (error) {
-      setError(error.message || 'Failed to login');
+      setError(getAuthErrorMessage(error));
       console.error('Login error:', error);
     } finally {
       setLoading(false);

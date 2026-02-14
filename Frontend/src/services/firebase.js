@@ -24,42 +24,48 @@ import {
   persistentMultipleTabManager 
 } from 'firebase/firestore';
 
-// Firebase configuration
-const firebaseConfig = {
-  apiKey: process.env.REACT_APP_FIREBASE_API_KEY || "AIzaSyDGT14SiCyZZeacCUMfvh10ZEVlipHn5PI",
-  authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN || "fyp-dt-1f493.firebaseapp.com",
-  projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID || "fyp-dt-1f493",
-  storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET || "fyp-dt-1f493.firebasestorage.app",
-  messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID || "134618746457",
-  appId: process.env.REACT_APP_FIREBASE_APP_ID || "1:134618746457:web:908ab3c517cedad1d9eb48",
-  measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENT_ID || "G-5BP9YLL94W"
+// Firebase configuration – use one project only (all from env or all from same fallback)
+// Mixing env + fallback from different projects causes auth/configuration-not-found
+// const fallbackProject = {
+//   apiKey: "AIzaSyBhQTWB0W1QxXH2b5wcNeWiAWluXzqsiW8",
+//   authDomain: "datatails-70287.firebaseapp.com",
+//   projectId: "datatails-70287",
+//   storageBucket: "datatails-70287.firebasestorage.app",
+//   messagingSenderId: "476009820445",
+//   appId: "1:476009820445:web:fc3cf811da9fbe378c31f4",
+//   measurementId: "G-9YDRBYKNYX"
+// };
+
+const firebaseConfig = process.env.REACT_APP_FIREBASE_API_KEY
+  ? {
+      apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+      authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
+      projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
+      storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
+      messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
+      appId: process.env.REACT_APP_FIREBASE_APP_ID,
+      measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENT_ID
+    }
+  : fallbackProject;
+
+// Ensure no undefined values (use fallback for any missing env)
+const config = {
+  apiKey: firebaseConfig.apiKey || fallbackProject.apiKey,
+  authDomain: firebaseConfig.authDomain || fallbackProject.authDomain,
+  projectId: firebaseConfig.projectId || fallbackProject.projectId,
+  storageBucket: firebaseConfig.storageBucket || fallbackProject.storageBucket,
+  messagingSenderId: firebaseConfig.messagingSenderId || fallbackProject.messagingSenderId,
+  appId: firebaseConfig.appId || fallbackProject.appId,
+  measurementId: firebaseConfig.measurementId || fallbackProject.measurementId
 };
 
-// Debug: Log Firebase config to console
-console.log("Firebase Config:", firebaseConfig);
-
-// Initialize Firebase with error handling
-let app, auth;
-try {
-  app = initializeApp(firebaseConfig);
-  auth = getAuth(app);
-  console.log("Firebase initialized successfully");
-} catch (error) {
-  console.error("Firebase initialization error:", error);
-  // Fallback configuration
-  const fallbackConfig = {
-    apiKey: "AIzaSyDGT14SiCyZZeacCUMfvh10ZEVlipHn5PI",
-    authDomain: "fyp-dt-1f493.firebaseapp.com",
-    projectId: "fyp-dt-1f493",
-    storageBucket: "fyp-dt-1f493.firebasestorage.app",
-    messagingSenderId: "134618746457",
-    appId: "1:134618746457:web:908ab3c517cedad1d9eb48",
-    measurementId: "G-5BP9YLL94W"
-  };
-  app = initializeApp(fallbackConfig);
-  auth = getAuth(app);
-  console.log("Firebase initialized with fallback config");
+// Debug: Log project only (do not log apiKey)
+if (process.env.NODE_ENV !== 'production') {
+  console.log("Firebase project:", config.projectId);
 }
+
+let app = initializeApp(config);
+let auth = getAuth(app);
 
 // Initialize Firestore with explicit settings to prevent "Unexpected state" errors
 const db = initializeFirestore(app, {

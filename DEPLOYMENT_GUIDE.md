@@ -38,6 +38,15 @@ REACT_APP_FIREBASE_APP_ID=...
 REACT_APP_FIREBASE_MEASUREMENT_ID=...
 ```
 
+**Firebase Authorized domains**  
+If you see `auth/configuration-not-found` or "Auth is not set up for this domain" when logging in, add your frontend URL to Firebase:
+
+1. Open [Firebase Console](https://console.firebase.google.com) → your project → **Authentication**
+2. Go to **Sign-in method** → **Authorized domains**
+3. Add your deployment domain (e.g. `your-app.vercel.app` or `localhost` for local dev)
+
+All Firebase config values must be from the **same** project (same `projectId`, `authDomain`, etc.).
+
 ## 🚀 Running the Application
 
 ### Development Mode
